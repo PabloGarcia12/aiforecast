@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aiforecast.app — Daily AI News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --gray-50: #f7f7f7;
+      --gray-100: #f2f2f2;
+      --gray-200: #e8e8e8;
+      --gray-300: #d0d0d0;
+      --gray-400: #aaaaaa;
+      --gray-500: #888888;
+      --gray-600: #666666;
+      --green: #22c55e;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      border-bottom: 0.5px solid var(--gray-200);
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .nav-logo-icon { width: 26px; height: 26px; }
+    .nav-logo-text { font-size: 15px; font-weight: 700; letter-spacing: -0.4px; color: var(--black); }
+    .nav-logo-text span { font-weight: 400; color: var(--gray-400); }
+    .nav-cta {
+      background: var(--black);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 20px;
+      border-radius: 22px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: var(--font);
+      transition: opacity 0.15s ease;
+    }
+    .nav-cta:hover { opacity: 0.75; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 72px 40px 56px;
+      text-align: center;
+    }
+    .free-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--gray-100);
+      color: #555;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+    .free-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 800;
+      letter-spacing: -2.5px;
+      line-height: 1.02;
+      color: var(--black);
+      margin-bottom: 20px;
+    }
+    .hero-title em { font-style: normal; color: #888; }
+    .hero-sub {
+      font-size: 18px;
+      color: var(--gray-600);
+      line-height: 1.65;
+      max-width: 440px;
+      margin: 0 auto 40px;
+      font-weight: 400;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-store {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 14px 24px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      font-family: var(--font);
+      transition: transform 0.12s ease, opacity 0.12s ease;
+      text-decoration: none;
+    }
+    .btn-store:hover { transform: translateY(-1px); opacity: 0.88; }
+    .btn-store:active { transform: translateY(0); }
+    .btn-black { background: var(--black); color: var(--white); }
+    .btn-outline { background: var(--white); color: var(--black); border: 1px solid var(--gray-300); }
+    .store-svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ── DEVICES SECTION ── */
+    .devices-section {
+      background: var(--black);
+      padding: 60px 16px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+    .devices-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 48px;
+      font-weight: 600;
+    }
+    .phones-stage {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 0;
+      width: 100%;
+      max-width: 640px;
+    }
+
+    /* Phone wrappers */
+    .pw { position: relative; flex-shrink: 0; }
+    .pw.left {
+      transform: perspective(1000px) rotateY(24deg) rotateX(3deg) translateX(24px);
+      z-index: 1;
+      margin-bottom: 18px;
+    }
+    .pw.center {
+      transform: perspective(1000px) rotateY(0deg) rotateX(2deg) translateY(-20px);
+      z-index: 3;
+    }
+    .pw.right {
+      transform: perspective(1000px) rotateY(-24deg) rotateX(3deg) translateX(-24px);
+      z-index: 2;
+      margin-bottom: 8px;
+    }
+
+    /* iPhone body */
+    .ibody {
+      width: 166px;
+      background: #cecece;
+      border-radius: 42px;
+      padding: 9px;
+      border: 1px solid #b4b4b4;
+      position: relative;
+      box-shadow:
+        3px 12px 40px rgba(0,0,0,0.55),
+        0 2px 6px rgba(0,0,0,0.3),
+        inset 0 0 0 0.5px rgba(255,255,255,0.75);
+    }
+    .ibody::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 42px;
+      border: 0.5px solid rgba(255,255,255,0.55);
+      pointer-events: none;
+    }
+    .pb-pwr  { position:absolute; right:-3px; top:72px;  width:3px; height:30px; background:#b0b0b0; border-radius:0 2px 2px 0; }
+    .pb-mute { position:absolute; left:-3px;  top:62px;  width:3px; height:20px; background:#b0b0b0; border-radius:2px 0 0 2px; }
+    .pb-v1   { position:absolute; left:-3px;  top:90px;  width:3px; height:42px; background:#b0b0b0; border-radius:2px 0 0 2px; }
+    .pb-v2   { position:absolute; left:-3px;  top:140px; width:3px; height:42px; background:#b0b0b0; border-radius:2px 0 0 2px; }
+
+    /* Screen */
+    .iscr { background: #fff; border-radius: 34px; overflow: hidden; }
+    .di-row { height: 30px; background: #f0f0f0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:3px; }
+    .di-pill { width: 72px; height: 18px; background: #111; border-radius: 16px; }
+
+    /* Splash screen */
+    .sc-splash {
+      background: #111;
+      padding: 20px 12px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 318px;
+    }
+    .sc-splash-ring {
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 0.5px solid rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+    }
+    .sc-splash-name  { font-size:12px; font-weight:800; color:#fff; letter-spacing:-0.3px; margin-bottom:3px; }
+    .sc-splash-sub   { font-size:7px; color:rgba(255,255,255,0.38); letter-spacing:1.2px; text-transform:uppercase; }
+    .sc-splash-btn   {
+      margin-top:22px;
+      background:rgba(255,255,255,0.1);
+      border:0.5px solid rgba(255,255,255,0.18);
+      border-radius:18px;
+      padding:7px 14px;
+      font-size:7px; color:rgba(255,255,255,0.65); font-weight:600; letter-spacing:0.3px;
+    }
+
+    /* Feed screen */
+    .sc-feed { padding:9px 9px 0; min-height:318px; }
+    .sc-f-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:2px; }
+    .sc-f-name { font-size:9px; font-weight:800; color:#000; }
+    .sc-f-date { font-size:6px; color:#bbb; margin-bottom:9px; }
+    .sc-card { background:#f5f5f7; border-radius:10px; padding:8px; margin-bottom:5px; }
+    .sc-card-img { width:100%; height:32px; background:#e0e0e0; border-radius:6px; margin-bottom:5px; }
+    .sc-tag { font-size:5.5px; font-weight:700; color:#999; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px; }
+    .sc-headline { font-size:7.5px; font-weight:700; line-height:1.28; color:#000; margin-bottom:2px; }
+    .sc-meta { font-size:5.5px; color:#bbb; }
+
+    /* Detail screen */
+    .sc-detail { min-height:318px; }
+    .sc-d-top { background:#111; padding:12px 11px 14px; }
+    .sc-d-back { font-size:6px; color:rgba(255,255,255,0.4); margin-bottom:7px; display:flex; align-items:center; gap:3px; }
+    .sc-d-title { font-size:8.5px; font-weight:800; color:#fff; line-height:1.3; margin-bottom:3px; }
+    .sc-d-src { font-size:6px; color:rgba(255,255,255,0.38); }
+    .sc-d-body { padding:9px 9px 0; }
+    .sc-d-meta-row { display:flex; gap:4px; margin-bottom:7px; }
+    .sc-d-chip { background:#f2f2f2; border-radius:8px; padding:4px 7px; font-size:6px; font-weight:700; color:#555; }
+    .sc-d-divider { height:0.5px; background:#eee; margin:7px 0; }
+    .sc-d-text { font-size:6.5px; color:#666; line-height:1.5; }
+    .sc-d-bm { margin-top:9px; background:#000; border-radius:14px; padding:7px; text-align:center; font-size:7.5px; font-weight:700; color:#fff; }
+
+    /* Bottom nav */
+    .bnav { display:flex; justify-content:space-around; padding:7px 4px 9px; border-top:0.5px solid #eee; background:#fff; }
+    .bnd { width:18px; height:3px; border-radius:1.5px; background:#e8e8e8; }
+    .bnd.on { background:#000; }
+
+    /* ── STATS ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1px;
+      background: var(--gray-200);
+      border-top: 0.5px solid var(--gray-200);
+      border-bottom: 0.5px solid var(--gray-200);
+    }
+    .stat-cell { background: var(--white); padding: 32px 24px; text-align: center; }
+    .stat-num { font-size: 30px; font-weight: 800; letter-spacing: -1.2px; color: var(--black); }
+    .stat-label { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
+
+    /* ── FEATURES ── */
+    .features { padding: 72px 40px; }
+    .sec-label {
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .sec-title {
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      color: var(--black);
+      line-height: 1.1;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+    }
+    .feat-card { padding: 24px 20px; background: var(--gray-50); border-radius: 18px; }
+    .feat-icon-wrap {
+      width: 40px; height: 40px;
+      background: var(--black);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .feat-icon-wrap svg { width: 20px; height: 20px; color: var(--white); stroke: var(--white); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .feat-title { font-size: 14px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
+    .feat-desc { font-size: 13px; color: var(--gray-500); line-height: 1.55; }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--white);
+      padding: 72px 40px;
+      text-align: center;
+      border-top: 0.5px solid var(--gray-200);
+    }
+    .cta-logo { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:20px; }
+    .cta-logo-text { font-size:18px; font-weight:800; color:var(--black); letter-spacing:-0.5px; }
+    .cta-logo-text span { font-weight:400; color:var(--gray-400); }
+    .cta-title {
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      color: var(--black);
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .cta-sub {
+      font-size: 17px;
+      color: var(--gray-500);
+      margin-bottom: 40px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.65;
+    }
+    .cta-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+    /* ── FOOTER ── */
+    .footer {
+      padding: 22px 40px;
+      border-top: 0.5px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .footer-logo { display:flex; align-items:center; gap:7px; text-decoration:none; }
+    .footer-logo-text { font-size:13px; font-weight:700; color:var(--black); letter-spacing:-0.3px; }
+    .footer-logo-text span { font-weight:400; color:#bbb; }
+    .footer-right { display:flex; flex-direction:column; align-items:flex-end; gap:3px; }
+    .footer-copy { font-size:12px; color:#bbb; }
+    .footer-made { font-size:11px; color:#d0d0d0; letter-spacing:0.5px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .nav { padding: 16px 20px; }
+      .hero { padding: 48px 24px 40px; }
+      .hero-title { letter-spacing: -1.5px; }
+      .devices-section { padding: 40px 10px 0; }
+      .phones-stage { max-width: 100%; }
+      .pw.left  { transform: perspective(800px) rotateY(18deg) rotateX(2deg) translateX(16px); }
+      .pw.right { transform: perspective(800px) rotateY(-18deg) rotateX(2deg) translateX(-16px); }
+      .ibody { width: 130px; border-radius: 34px; }
+      .ibody::after { border-radius: 34px; }
+      .iscr { border-radius: 26px; }
+      .pb-pwr  { top:58px; height:24px; }
+      .pb-mute { top:50px; height:16px; }
+      .pb-v1   { top:72px; height:34px; }
+      .pb-v2   { top:114px; height:34px; }
+      .di-pill { width:58px; height:15px; }
+      .sc-splash { min-height:252px; }
+      .sc-feed   { min-height:252px; }
+      .sc-detail { min-height:252px; }
+      .sc-splash-ring { width:46px; height:46px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .features { padding: 48px 20px; }
+      .feat-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+      .cta-section { padding: 48px 24px; }
+      .footer { padding: 20px 24px; }
+      .footer-right { align-items: flex-start; }
+    }
+
+    @media (max-width: 420px) {
+      .phones-stage { gap: -8px; }
+      .pw.left  { transform: perspective(600px) rotateY(14deg) rotateX(2deg) translateX(10px); margin-bottom:12px; }
+      .pw.right { transform: perspective(600px) rotateY(-14deg) rotateX(2deg) translateX(-10px); margin-bottom:4px; }
+      .ibody { width: 110px; border-radius: 28px; }
+      .ibody::after { border-radius: 28px; }
+      .iscr { border-radius: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-logo" aria-label="aiforecast.app home">
+    <svg class="nav-logo-icon" viewBox="0 0 158.75 158.75" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path style="fill:#1a1a1a;stroke:#fff;stroke-width:0.68;stroke-linejoin:round;"
+        d="M 147.47201,79.375 A 68.097008,68.567268 0 0 1 92.538837,146.64893
+           68.097008,68.567268 0 0 1 16.367396,105.38446
+           68.097008,68.567268 0 0 1 41.851156,22.156846
+           68.097008,68.567268 0 0 1 127.87513,31.243854 L 79.375,79.375 Z"/>
+    </svg>
+    <span class="nav-logo-text">aiforecast<span>.app</span></span>
+  </a>
+  <a href="#cta" class="nav-cta">Download Free</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="free-pill"><span class="free-dot" aria-hidden="true"></span> 100% free — no subscription ever</div>
+  <p class="hero-eyebrow">Your daily AI intelligence</p>
+  <h1 class="hero-title">The world's AI,<br><em>every morning.</em></h1>
+  <p class="hero-sub">Every breakthrough, every launch, every shift — curated fresh and delivered to your pocket daily.</p>
+  <div class="hero-btns">
+    <a href="#" class="btn-store btn-black" aria-label="Download on App Store">
+      <svg class="store-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.79 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z" fill="white"/>
+      </svg>
+      App Store
+    </a>
+    <a href="#" class="btn-store btn-outline" aria-label="Get it on Google Play">
+      <svg class="store-svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3.18 23.76C3.06 23.7 2.96 23.61 2.87 23.5C2.63 23.21 2.5 22.8 2.5 22.28V1.72C2.5 1.2 2.63 0.79 2.87 0.5C2.96 0.39 3.06 0.3 3.18 0.24L13.54 12L3.18 23.76Z" fill="#EA4335"/>
+        <path d="M17.04 15.54L13.54 12L17.04 8.46L21.31 10.9C22.53 11.59 22.53 12.41 21.31 13.1L17.04 15.54Z" fill="#FBBC04"/>
+        <path d="M3.18 23.76L13.54 12L17.04 15.54L4.15 23.04C3.79 23.26 3.45 23.31 3.18 23.76Z" fill="#34A853"/>
+        <path d="M3.18 0.24C3.45 0.69 3.79 0.74 4.15 0.96L17.04 8.46L13.54 12L3.18 0.24Z" fill="#4285F4"/>
+      </svg>
+      Google Play
+    </a>
+  </div>
+</section>
+
+<!-- DEVICES -->
+<section class="devices-section" aria-label="App screenshots on iPhone and Android">
+  <p class="devices-label">Available on iOS &amp; Android</p>
+  <div class="phones-stage">
+
+    <!-- Left phone: Splash -->
+    <div class="pw left" aria-hidden="true">
+      <div class="ibody">
+        <div class="pb-pwr"></div><div class="pb-mute"></div><div class="pb-v1"></div><div class="pb-v2"></div>
+        <div class="iscr">
+          <div class="di-row"><div class="di-pill"></div></div>
+          <div class="sc-splash">
+            <div class="sc-splash-ring">
+              <svg width="34" height="34" viewBox="0 0 158.75 158.75">
+                <path style="fill:#fff;" d="M 147.47201,79.375 A 68.097008,68.567268 0 0 1 92.538837,146.64893 68.097008,68.567268 0 0 1 16.367396,105.38446 68.097008,68.567268 0 0 1 41.851156,22.156846 68.097008,68.567268 0 0 1 127.87513,31.243854 L 79.375,79.375 Z"/>
+              </svg>
+            </div>
+            <div class="sc-splash-name">aiforecast.app</div>
+            <div class="sc-splash-sub">Daily AI Intelligence</div>
+            <div class="sc-splash-btn">Free · No subscription</div>
+          </div>
+          <div class="bnav"><div class="bnd on"></div><div class="bnd"></div><div class="bnd"></div><div class="bnd"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center phone: Feed -->
+    <div class="pw center" aria-hidden="true">
+      <div class="ibody">
+        <div class="pb-pwr"></div><div class="pb-mute"></div><div class="pb-v1"></div><div class="pb-v2"></div>
+        <div class="iscr">
+          <div class="di-row"><div class="di-pill"></div></div>
+          <div class="sc-feed">
+            <div class="sc-f-hdr">
+              <div style="display:flex;align-items:center;gap:4px;">
+                <svg width="10" height="10" viewBox="0 0 158.75 158.75">
+                  <path style="fill:#1a1a1a;" d="M 147.47201,79.375 A 68.097008,68.567268 0 0 1 92.538837,146.64893 68.097008,68.567268 0 0 1 16.367396,105.38446 68.097008,68.567268 0 0 1 41.851156,22.156846 68.097008,68.567268 0 0 1 127.87513,31.243854 L 79.375,79.375 Z"/>
+                </svg>
+                <span class="sc-f-name">Morning Digest</span>
+              </div>
+              <div style="width:14px;height:14px;border-radius:50%;background:#f0f0f0;"></div>
+            </div>
+            <div class="sc-f-date">Tuesday, May 19 · 8:00 AM</div>
+            <div class="sc-card">
+              <div class="sc-card-img"></div>
+              <div class="sc-tag">Breaking · 1h ago</div>
+              <div class="sc-headline">OpenAI unveils next-gen reasoning model surpassing all benchmarks</div>
+              <div class="sc-meta">openai.com · 4 min read</div>
+            </div>
+            <div class="sc-card">
+              <div class="sc-tag">Research · 3h ago</div>
+              <div class="sc-headline">DeepMind publishes major protein folding breakthrough</div>
+              <div class="sc-meta">deepmind.google · 6 min read</div>
+            </div>
+            <div class="sc-card">
+              <div class="sc-tag">Policy · 6h ago</div>
+              <div class="sc-headline">EU passes landmark AI regulation framework for 2025</div>
+              <div class="sc-meta">reuters.com · 3 min read</div>
+            </div>
+          </div>
+          <div class="bnav"><div class="bnd on"></div><div class="bnd"></div><div class="bnd"></div><div class="bnd"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right phone: Detail -->
+    <div class="pw right" aria-hidden="true">
+      <div class="ibody">
+        <div class="pb-pwr"></div><div class="pb-mute"></div><div class="pb-v1"></div><div class="pb-v2"></div>
+        <div class="iscr">
+          <div class="di-row"><div class="di-pill"></div></div>
+          <div class="sc-detail">
+            <div class="sc-d-top">
+              <div class="sc-d-back">
+                <svg width="5" height="8" viewBox="0 0 5 8" fill="none"><path d="M4 1L1 4L4 7" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linecap="round"/></svg>
+                Back
+              </div>
+              <div class="sc-d-title">Anthropic raises $3B Series E — what it means for AI in 2025</div>
+              <div class="sc-d-src">techcrunch.com · 1h ago · 5 min read</div>
+            </div>
+            <div class="sc-d-body">
+              <div class="sc-d-meta-row">
+                <span class="sc-d-chip">Funding</span>
+                <span class="sc-d-chip">Startups</span>
+                <span class="sc-d-chip">5 min</span>
+              </div>
+              <div class="sc-d-divider"></div>
+              <div class="sc-d-text">Anthropic has secured a $3 billion Series E round led by major institutional investors, pushing its valuation to over $60B. Funds will accelerate next-gen Claude research and global expansion...</div>
+              <div class="sc-d-bm">Bookmark story</div>
+            </div>
+          </div>
+          <div class="bnav"><div class="bnd"></div><div class="bnd on"></div><div class="bnd"></div><div class="bnd"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats" aria-label="Key statistics">
+  <div class="stat-cell"><div class="stat-num">50K+</div><div class="stat-label">Daily readers</div></div>
+  <div class="stat-cell"><div class="stat-num">200+</div><div class="stat-label">Verified sources</div></div>
+  <div class="stat-cell"><div class="stat-num">Daily</div><div class="stat-label">Fresh digest 8am</div></div>
+  <div class="stat-cell"><div class="stat-num">Free</div><div class="stat-label">Forever, always</div></div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <p class="sec-label">Why aiforecast.app</p>
+  <h2 class="sec-title">Everything AI.<br>Nothing else.</h2>
+  <div class="feat-grid">
+
+    <div class="feat-card">
+      <div class="feat-icon-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h10"/></svg>
+      </div>
+      <div class="feat-title">Daily digest</div>
+      <div class="feat-desc">Top 10 AI stories curated every morning by 8am, worldwide.</div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-icon-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <div class="feat-title">Global sources</div>
+      <div class="feat-desc">News from 200+ verified AI labs, media outlets and journals.</div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-icon-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      </div>
+      <div class="feat-title">Zero noise</div>
+      <div class="feat-desc">Pure signal only. No fluff, no ads, no filler — just what matters.</div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-icon-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </div>
+      <div class="feat-title">Smart alerts</div>
+      <div class="feat-desc">Breaking AI news notifications the moment it happens globally.</div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-icon-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="feat-title">Save &amp; read later</div>
+      <div class="feat-desc">Bookmark any story and return to it whenever you're ready.</div>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-icon-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      </div>
+      <div class="feat-title">Your topics</div>
+      <div class="feat-desc">Filter by research, startups, policy, tools or any AI category.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-logo">
+    <svg width="32" height="32" viewBox="0 0 158.75 158.75" aria-hidden="true">
+      <path style="fill:#1a1a1a;" d="M 147.47201,79.375 A 68.097008,68.567268 0 0 1 92.538837,146.64893 68.097008,68.567268 0 0 1 16.367396,105.38446 68.097008,68.567268 0 0 1 41.851156,22.156846 68.097008,68.567268 0 0 1 127.87513,31.243854 L 79.375,79.375 Z"/>
+    </svg>
+    <span class="cta-logo-text">aiforecast<span>.app</span></span>
+  </div>
+  <h2 class="cta-title">Stay ahead of AI.<br>Every day. Free.</h2>
+  <p class="cta-sub">Join 50,000+ readers who never miss what's next in artificial intelligence.</p>
+  <div class="cta-btns">
+    <a href="#" class="btn-store btn-outline" aria-label="Download on App Store">
+      <svg class="store-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.79 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z" fill="black"/>
+      </svg>
+      Download on App Store
+    </a>
+    <a href="#" class="btn-store btn-outline" aria-label="Get it on Google Play">
+      <svg class="store-svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3.18 23.76C3.06 23.7 2.96 23.61 2.87 23.5C2.63 23.21 2.5 22.8 2.5 22.28V1.72C2.5 1.2 2.63 0.79 2.87 0.5C2.96 0.39 3.06 0.3 3.18 0.24L13.54 12L3.18 23.76Z" fill="#EA4335"/>
+        <path d="M17.04 15.54L13.54 12L17.04 8.46L21.31 10.9C22.53 11.59 22.53 12.41 21.31 13.1L17.04 15.54Z" fill="#FBBC04"/>
+        <path d="M3.18 23.76L13.54 12L17.04 15.54L4.15 23.04C3.79 23.26 3.45 23.31 3.18 23.76Z" fill="#34A853"/>
+        <path d="M3.18 0.24C3.45 0.69 3.79 0.74 4.15 0.96L17.04 8.46L13.54 12L3.18 0.24Z" fill="#4285F4"/>
+      </svg>
+      Get it on Google Play
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <a href="#" class="footer-logo" aria-label="aiforecast.app">
+    <svg width="18" height="18" viewBox="0 0 158.75 158.75" aria-hidden="true">
+      <path style="fill:#1a1a1a;" d="M 147.47201,79.375 A 68.097008,68.567268 0 0 1 92.538837,146.64893 68.097008,68.567268 0 0 1 16.367396,105.38446 68.097008,68.567268 0 0 1 41.851156,22.156846 68.097008,68.567268 0 0 1 127.87513,31.243854 L 79.375,79.375 Z"/>
+    </svg>
+    <span class="footer-logo-text">aiforecast<span>.app</span></span>
+  </a>
+  <div class="footer-right">
+    <span class="footer-copy">© 2025 aiforecast.app — free forever</span>
+    <span class="footer-made">made4cc</span>
+  </div>
+</footer>
+
+</body>
+</html>
