@@ -6,7 +6,7 @@
   <title>aiforecast.app — Daily AI News</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -21,7 +21,7 @@
       --gray-500: #888888;
       --gray-600: #666666;
       --green: #22c55e;
-      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
@@ -32,27 +32,40 @@
       color: var(--black);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
     }
 
-    /* ── NAV ── */
+    /* ─────────────────────────────
+       NAV
+    ───────────────────────────── */
     .nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 18px 40px;
       border-bottom: 0.5px solid var(--gray-200);
-      flex-wrap: wrap;
-      gap: 12px;
       position: sticky;
       top: 0;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       z-index: 100;
+      gap: 12px;
     }
-    .nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
-    .nav-logo-icon { width: 26px; height: 26px; }
-    .nav-logo-text { font-size: 15px; font-weight: 700; letter-spacing: -0.4px; color: var(--black); }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .nav-logo-text {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      color: var(--black);
+      white-space: nowrap;
+    }
     .nav-logo-text span { font-weight: 400; color: var(--gray-400); }
     .nav-cta {
       background: var(--black);
@@ -65,11 +78,15 @@
       cursor: pointer;
       white-space: nowrap;
       font-family: var(--font);
-      transition: opacity 0.15s ease;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.15s;
     }
     .nav-cta:hover { opacity: 0.75; }
 
-    /* ── HERO ── */
+    /* ─────────────────────────────
+       HERO
+    ───────────────────────────── */
     .hero {
       padding: 72px 40px 56px;
       text-align: center;
@@ -100,16 +117,16 @@
       margin-bottom: 16px;
     }
     .hero-title {
-      font-size: clamp(36px, 6vw, 56px);
+      font-size: clamp(34px, 6vw, 56px);
       font-weight: 800;
-      letter-spacing: -2.5px;
+      letter-spacing: -2px;
       line-height: 1.02;
       color: var(--black);
       margin-bottom: 20px;
     }
     .hero-title em { font-style: normal; color: #888; }
     .hero-sub {
-      font-size: 18px;
+      font-size: 17px;
       color: var(--gray-600);
       line-height: 1.65;
       max-width: 440px;
@@ -123,7 +140,9 @@
       flex-wrap: wrap;
     }
 
-    /* ── BUTTONS ── */
+    /* ─────────────────────────────
+       BUTTONS
+    ───────────────────────────── */
     .btn-store {
       display: inline-flex;
       align-items: center;
@@ -136,161 +155,183 @@
       font-weight: 600;
       white-space: nowrap;
       font-family: var(--font);
-      transition: transform 0.12s ease, opacity 0.12s ease;
       text-decoration: none;
+      transition: transform 0.12s ease, opacity 0.12s ease;
     }
-    .btn-store:hover { transform: translateY(-1px); opacity: 0.88; }
+    .btn-store:hover { transform: translateY(-1px); opacity: 0.85; }
     .btn-store:active { transform: translateY(0); }
     .btn-black { background: var(--black); color: var(--white); }
     .btn-outline { background: var(--white); color: var(--black); border: 1px solid var(--gray-300); }
     .store-svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-    /* ── DEVICES SECTION ── */
+    /* ─────────────────────────────
+       DEVICES SECTION
+    ───────────────────────────── */
     .devices-section {
-      background: var(--black);
-      padding: 60px 16px 0;
+      position: relative;
+      overflow: hidden;
+      padding: 70px 20px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      overflow: hidden;
+      /* Vivid coral-to-amber gradient — warm, electric, impossible to ignore */
+      background: #FF4D4D;
+      background: linear-gradient(135deg, #FF4D4D 0%, #FF8C00 50%, #FFD700 100%);
     }
+
+    /* Noise texture overlay for depth */
+    .devices-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
     .devices-label {
+      position: relative;
+      z-index: 1;
       font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--white);
+      color: rgba(0,0,0,0.55);
       margin-bottom: 48px;
-      font-weight: 600;
+      font-weight: 700;
     }
-    .phones-stage {
+
+    /* Single phone centered — no 3D transform tricks */
+    .phone-showcase {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 24px;
+      width: 100%;
+      max-width: 700px;
+    }
+
+    /* ── iPhone frame ── */
+    .iphone {
+      width: 220px;
+      flex-shrink: 0;
+      background: #e0e0e0;
+      border-radius: 52px;
+      padding: 11px;
+      border: 1px solid #c4c4c4;
+      position: relative;
+      box-shadow:
+        0 0 0 0.5px rgba(255,255,255,0.7) inset,
+        0 32px 80px rgba(0,0,0,0.32),
+        0 8px 20px rgba(0,0,0,0.18);
+    }
+    .iphone::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 52px;
+      border: 0.5px solid rgba(255,255,255,0.6);
+      pointer-events: none;
+    }
+    /* side buttons */
+    .ip-pwr  { position:absolute; right:-3.5px; top:88px;  width:3.5px; height:36px; background:#bbb; border-radius:0 3px 3px 0; }
+    .ip-mute { position:absolute; left:-3.5px;  top:76px;  width:3.5px; height:24px; background:#bbb; border-radius:3px 0 0 3px; }
+    .ip-v1   { position:absolute; left:-3.5px;  top:110px; width:3.5px; height:52px; background:#bbb; border-radius:3px 0 0 3px; }
+    .ip-v2   { position:absolute; left:-3.5px;  top:172px; width:3.5px; height:52px; background:#bbb; border-radius:3px 0 0 3px; }
+
+    .ip-screen {
+      background: #fff;
+      border-radius: 42px;
+      overflow: hidden;
+    }
+    .ip-di-bar {
+      height: 38px;
+      background: #f0f0f0;
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      gap: 0;
-      width: 100%;
-      max-width: 640px;
+      padding-bottom: 4px;
     }
-
-    /* Phone wrappers */
-    .pw { position: relative; flex-shrink: 0; }
-    .pw.left {
-      transform: perspective(1000px) rotateY(24deg) rotateX(3deg) translateX(24px);
-      z-index: 1;
-      margin-bottom: 18px;
-    }
-    .pw.center {
-      transform: perspective(1000px) rotateY(0deg) rotateX(2deg) translateY(-20px);
-      z-index: 3;
-    }
-    .pw.right {
-      transform: perspective(1000px) rotateY(-24deg) rotateX(3deg) translateX(-24px);
-      z-index: 2;
-      margin-bottom: 8px;
-    }
-
-    /* iPhone body */
-    .ibody {
-      width: 166px;
-      background: #cecece;
-      border-radius: 42px;
-      padding: 9px;
-      border: 1px solid #b4b4b4;
-      position: relative;
-      box-shadow:
-        3px 12px 40px rgba(0,0,0,0.55),
-        0 2px 6px rgba(0,0,0,0.3),
-        inset 0 0 0 0.5px rgba(255,255,255,0.75);
-    }
-    .ibody::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      border-radius: 42px;
-      border: 0.5px solid rgba(255,255,255,0.55);
-      pointer-events: none;
-    }
-    .pb-pwr  { position:absolute; right:-3px; top:72px;  width:3px; height:30px; background:#b0b0b0; border-radius:0 2px 2px 0; }
-    .pb-mute { position:absolute; left:-3px;  top:62px;  width:3px; height:20px; background:#b0b0b0; border-radius:2px 0 0 2px; }
-    .pb-v1   { position:absolute; left:-3px;  top:90px;  width:3px; height:42px; background:#b0b0b0; border-radius:2px 0 0 2px; }
-    .pb-v2   { position:absolute; left:-3px;  top:140px; width:3px; height:42px; background:#b0b0b0; border-radius:2px 0 0 2px; }
-
-    /* Screen */
-    .iscr { background: #fff; border-radius: 34px; overflow: hidden; }
-    .di-row { height: 30px; background: #f0f0f0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:3px; }
-    .di-pill { width: 72px; height: 18px; background: #111; border-radius: 16px; }
-
-    /* Splash screen */
-    .sc-splash {
+    .ip-di {
+      width: 88px; height: 22px;
       background: #111;
-      padding: 20px 12px 18px;
+      border-radius: 18px;
+    }
+
+    /* Screen content */
+    .ip-content { padding: 12px 12px 0; }
+
+    .ip-hdr {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+    .ip-hdr-left { display:flex; align-items:center; gap:5px; }
+    .ip-appname  { font-size: 11px; font-weight: 800; color: #000; letter-spacing: -0.3px; }
+    .ip-date     { font-size: 7.5px; color: #bbb; margin-bottom: 11px; }
+    .ip-avatar   { width:18px; height:18px; border-radius:50%; background:#ececec; }
+
+    .ip-card {
+      background: #f5f5f7;
+      border-radius: 13px;
+      padding: 10px;
+      margin-bottom: 7px;
+    }
+    .ip-card-img {
+      width: 100%;
+      height: 46px;
+      background: #ddd;
+      border-radius: 8px;
+      margin-bottom: 7px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 318px;
     }
-    .sc-splash-ring {
-      width: 58px; height: 58px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      border: 0.5px solid rgba(255,255,255,0.12);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 12px;
+    .ip-tag      { font-size: 7px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px; }
+    .ip-headline { font-size: 9px; font-weight: 700; line-height: 1.3; color: #000; margin-bottom: 3px; }
+    .ip-meta     { font-size: 7px; color: #bbb; }
+
+    .ip-bnav {
+      display: flex;
+      justify-content: space-around;
+      padding: 9px 6px 12px;
+      border-top: 0.5px solid #eee;
+      background: #fff;
     }
-    .sc-splash-name  { font-size:12px; font-weight:800; color:#fff; letter-spacing:-0.3px; margin-bottom:3px; }
-    .sc-splash-sub   { font-size:7px; color:rgba(255,255,255,0.38); letter-spacing:1.2px; text-transform:uppercase; }
-    .sc-splash-btn   {
-      margin-top:22px;
-      background:rgba(255,255,255,0.1);
-      border:0.5px solid rgba(255,255,255,0.18);
-      border-radius:18px;
-      padding:7px 14px;
-      font-size:7px; color:rgba(255,255,255,0.65); font-weight:600; letter-spacing:0.3px;
+    .ip-dot { width: 22px; height: 3.5px; border-radius: 2px; background: #e8e8e8; }
+    .ip-dot.on { background: #000; }
+
+    /* second phone (slightly behind, translated) */
+    .iphone.secondary {
+      width: 200px;
+      margin-bottom: -12px;
+      opacity: 0.92;
+      box-shadow:
+        0 0 0 0.5px rgba(255,255,255,0.6) inset,
+        0 24px 60px rgba(0,0,0,0.25),
+        0 6px 16px rgba(0,0,0,0.15);
     }
 
-    /* Feed screen */
-    .sc-feed { padding:9px 9px 0; min-height:318px; }
-    .sc-f-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:2px; }
-    .sc-f-name { font-size:9px; font-weight:800; color:#000; }
-    .sc-f-date { font-size:6px; color:#bbb; margin-bottom:9px; }
-    .sc-card { background:#f5f5f7; border-radius:10px; padding:8px; margin-bottom:5px; }
-    .sc-card-img { width:100%; height:32px; background:#e0e0e0; border-radius:6px; margin-bottom:5px; }
-    .sc-tag { font-size:5.5px; font-weight:700; color:#999; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:2px; }
-    .sc-headline { font-size:7.5px; font-weight:700; line-height:1.28; color:#000; margin-bottom:2px; }
-    .sc-meta { font-size:5.5px; color:#bbb; }
-
-    /* Detail screen */
-    .sc-detail { min-height:318px; }
-    .sc-d-top { background:#111; padding:12px 11px 14px; }
-    .sc-d-back { font-size:6px; color:rgba(255,255,255,0.4); margin-bottom:7px; display:flex; align-items:center; gap:3px; }
-    .sc-d-title { font-size:8.5px; font-weight:800; color:#fff; line-height:1.3; margin-bottom:3px; }
-    .sc-d-src { font-size:6px; color:rgba(255,255,255,0.38); }
-    .sc-d-body { padding:9px 9px 0; }
-    .sc-d-meta-row { display:flex; gap:4px; margin-bottom:7px; }
-    .sc-d-chip { background:#f2f2f2; border-radius:8px; padding:4px 7px; font-size:6px; font-weight:700; color:#555; }
-    .sc-d-divider { height:0.5px; background:#eee; margin:7px 0; }
-    .sc-d-text { font-size:6.5px; color:#666; line-height:1.5; }
-    .sc-d-bm { margin-top:9px; background:#000; border-radius:14px; padding:7px; text-align:center; font-size:7.5px; font-weight:700; color:#fff; }
-
-    /* Bottom nav */
-    .bnav { display:flex; justify-content:space-around; padding:7px 4px 9px; border-top:0.5px solid #eee; background:#fff; }
-    .bnd { width:18px; height:3px; border-radius:1.5px; background:#e8e8e8; }
-    .bnd.on { background:#000; }
-
-    /* ── STATS ── */
+    /* ─────────────────────────────
+       STATS
+    ───────────────────────────── */
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 1px;
       background: var(--gray-200);
       border-top: 0.5px solid var(--gray-200);
       border-bottom: 0.5px solid var(--gray-200);
     }
-    .stat-cell { background: var(--white); padding: 32px 24px; text-align: center; }
-    .stat-num { font-size: 30px; font-weight: 800; letter-spacing: -1.2px; color: var(--black); }
+    .stat-cell { background: var(--white); padding: 32px 20px; text-align: center; }
+    .stat-num  { font-size: 30px; font-weight: 800; letter-spacing: -1.2px; color: var(--black); }
     .stat-label { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
 
-    /* ── FEATURES ── */
+    /* ─────────────────────────────
+       FEATURES
+    ───────────────────────────── */
     .features { padding: 72px 40px; }
     .sec-label {
       font-size: 11px;
@@ -301,17 +342,17 @@
       text-align: center;
     }
     .sec-title {
-      font-size: clamp(24px, 4vw, 34px);
+      font-size: clamp(26px, 4vw, 36px);
       font-weight: 800;
       letter-spacing: -1.2px;
       color: var(--black);
-      line-height: 1.1;
+      line-height: 1.08;
       text-align: center;
       margin-bottom: 48px;
     }
     .feat-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 14px;
     }
     .feat-card { padding: 24px 20px; background: var(--gray-50); border-radius: 18px; }
@@ -322,11 +363,20 @@
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 14px;
     }
-    .feat-icon-wrap svg { width: 20px; height: 20px; color: var(--white); stroke: var(--white); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .feat-icon-wrap svg {
+      width: 20px; height: 20px;
+      stroke: var(--white);
+      fill: none;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
     .feat-title { font-size: 14px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
-    .feat-desc { font-size: 13px; color: var(--gray-500); line-height: 1.55; }
+    .feat-desc  { font-size: 13px; color: var(--gray-500); line-height: 1.55; }
 
-    /* ── CTA ── */
+    /* ─────────────────────────────
+       CTA
+    ───────────────────────────── */
     .cta-section {
       background: var(--white);
       padding: 72px 40px;
@@ -337,25 +387,25 @@
     .cta-logo-text { font-size:18px; font-weight:800; color:var(--black); letter-spacing:-0.5px; }
     .cta-logo-text span { font-weight:400; color:var(--gray-400); }
     .cta-title {
-      font-size: clamp(26px, 4vw, 40px);
+      font-size: clamp(28px, 4vw, 42px);
       font-weight: 800;
       letter-spacing: -1.5px;
       color: var(--black);
-      line-height: 1.1;
+      line-height: 1.08;
       margin-bottom: 14px;
     }
     .cta-sub {
       font-size: 17px;
       color: var(--gray-500);
-      margin-bottom: 40px;
+      margin: 0 auto 40px;
       max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
       line-height: 1.65;
     }
     .cta-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
 
-    /* ── FOOTER ── */
+    /* ─────────────────────────────
+       FOOTER
+    ───────────────────────────── */
     .footer {
       padding: 22px 40px;
       border-top: 0.5px solid var(--gray-200);
@@ -367,68 +417,75 @@
     }
     .footer-logo { display:flex; align-items:center; gap:7px; text-decoration:none; }
     .footer-logo-text { font-size:13px; font-weight:700; color:var(--black); letter-spacing:-0.3px; }
-    .footer-logo-text span { font-weight:400; color:#bbb; }
+    .footer-logo-text span { font-weight:400; color:#ccc; }
     .footer-right { display:flex; flex-direction:column; align-items:flex-end; gap:3px; }
     .footer-copy { font-size:12px; color:#bbb; }
     .footer-made { font-size:11px; color:#d0d0d0; letter-spacing:0.5px; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 680px) {
-      .nav { padding: 16px 20px; }
-      .hero { padding: 48px 24px 40px; }
+    /* ─────────────────────────────
+       RESPONSIVE
+    ───────────────────────────── */
+    @media (max-width: 860px) {
+      .feat-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .nav { padding: 14px 20px; }
+
+      .hero { padding: 48px 24px 36px; }
       .hero-title { letter-spacing: -1.5px; }
-      .devices-section { padding: 40px 10px 0; }
-      .phones-stage { max-width: 100%; }
-      .pw.left  { transform: perspective(800px) rotateY(18deg) rotateX(2deg) translateX(16px); }
-      .pw.right { transform: perspective(800px) rotateY(-18deg) rotateX(2deg) translateX(-16px); }
-      .ibody { width: 130px; border-radius: 34px; }
-      .ibody::after { border-radius: 34px; }
-      .iscr { border-radius: 26px; }
-      .pb-pwr  { top:58px; height:24px; }
-      .pb-mute { top:50px; height:16px; }
-      .pb-v1   { top:72px; height:34px; }
-      .pb-v2   { top:114px; height:34px; }
-      .di-pill { width:58px; height:15px; }
-      .sc-splash { min-height:252px; }
-      .sc-feed   { min-height:252px; }
-      .sc-detail { min-height:252px; }
-      .sc-splash-ring { width:46px; height:46px; }
+      .hero-sub { font-size: 16px; }
+
+      .devices-section { padding: 48px 16px 0; }
+      .phone-showcase { gap: 14px; }
+      .iphone { width: 170px; border-radius: 42px; padding: 9px; }
+      .iphone::after { border-radius: 42px; }
+      .ip-screen { border-radius: 34px; }
+      .ip-di-bar { height: 30px; }
+      .ip-di { width: 70px; height: 18px; }
+      .ip-card-img { height: 36px; }
+      .ip-pwr  { top:70px; height:28px; }
+      .ip-mute { top:60px; height:18px; }
+      .ip-v1   { top:88px; height:40px; }
+      .ip-v2   { top:136px; height:40px; }
+      .iphone.secondary { width: 155px; }
+
       .stats { grid-template-columns: repeat(2, 1fr); }
+      .stat-num { font-size: 24px; }
+
       .features { padding: 48px 20px; }
-      .feat-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+      .feat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .feat-card { padding: 18px 14px; }
+
       .cta-section { padding: 48px 24px; }
       .footer { padding: 20px 24px; }
       .footer-right { align-items: flex-start; }
     }
 
-    @media (max-width: 420px) {
-      .phones-stage { gap: -8px; }
-      .pw.left  { transform: perspective(600px) rotateY(14deg) rotateX(2deg) translateX(10px); margin-bottom:12px; }
-      .pw.right { transform: perspective(600px) rotateY(-14deg) rotateX(2deg) translateX(-10px); margin-bottom:4px; }
-      .ibody { width: 110px; border-radius: 28px; }
-      .ibody::after { border-radius: 28px; }
-      .iscr { border-radius: 22px; }
+    @media (max-width: 400px) {
+      .phone-showcase { gap: 8px; }
+      .iphone { width: 148px; border-radius: 36px; padding: 8px; }
+      .iphone::after { border-radius: 36px; }
+      .ip-screen { border-radius: 30px; }
+      .iphone.secondary { width: 134px; }
+      .feat-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ── NAV ── -->
 <nav class="nav">
   <a href="#" class="nav-logo" aria-label="aiforecast.app home">
-    <svg class="nav-logo-icon" viewBox="0 0 158.75 158.75" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path style="fill:#1a1a1a;stroke:#fff;stroke-width:0.68;stroke-linejoin:round;"
-        d="M 147.47201,79.375 A 68.097008,68.567268 0 0 1 92.538837,146.64893
-           68.097008,68.567268 0 0 1 16.367396,105.38446
-           68.097008,68.567268 0 0 1 41.851156,22.156846
-           68.097008,68.567268 0 0 1 127.87513,31.243854 L 79.375,79.375 Z"/>
+    <svg width="26" height="26" viewBox="0 0 158.75 158.75" aria-hidden="true">
+      <path style="fill:#1a1a1a;" d="M 147.47201,79.375 A 68.097008,68.567268 0 0 1 92.538837,146.64893 68.097008,68.567268 0 0 1 16.367396,105.38446 68.097008,68.567268 0 0 1 41.851156,22.156846 68.097008,68.567268 0 0 1 127.87513,31.243854 L 79.375,79.375 Z"/>
     </svg>
     <span class="nav-logo-text">aiforecast<span>.app</span></span>
   </a>
   <a href="#cta" class="nav-cta">Download Free</a>
 </nav>
 
-<!-- HERO -->
+<!-- ── HERO ── -->
 <section class="hero">
   <div class="free-pill"><span class="free-dot" aria-hidden="true"></span> 100% free — no subscription ever</div>
   <p class="hero-eyebrow">Your daily AI intelligence</p>
@@ -453,98 +510,95 @@
   </div>
 </section>
 
-<!-- DEVICES -->
-<section class="devices-section" aria-label="App screenshots on iPhone and Android">
+<!-- ── DEVICES ── -->
+<section class="devices-section" aria-label="App screenshots">
   <p class="devices-label">Available on iOS &amp; Android</p>
-  <div class="phones-stage">
 
-    <!-- Left phone: Splash -->
-    <div class="pw left" aria-hidden="true">
-      <div class="ibody">
-        <div class="pb-pwr"></div><div class="pb-mute"></div><div class="pb-v1"></div><div class="pb-v2"></div>
-        <div class="iscr">
-          <div class="di-row"><div class="di-pill"></div></div>
-          <div class="sc-splash">
-            <div class="sc-splash-ring">
-              <svg width="34" height="34" viewBox="0 0 158.75 158.75">
-                <path style="fill:#fff;" d="M 147.47201,79.375 A 68.097008,68.567268 0 0 1 92.538837,146.64893 68.097008,68.567268 0 0 1 16.367396,105.38446 68.097008,68.567268 0 0 1 41.851156,22.156846 68.097008,68.567268 0 0 1 127.87513,31.243854 L 79.375,79.375 Z"/>
+  <div class="phone-showcase">
+
+    <!-- Primary phone — feed screen -->
+    <div class="iphone" aria-hidden="true">
+      <div class="ip-pwr"></div>
+      <div class="ip-mute"></div>
+      <div class="ip-v1"></div>
+      <div class="ip-v2"></div>
+      <div class="ip-screen">
+        <div class="ip-di-bar"><div class="ip-di"></div></div>
+        <div class="ip-content">
+          <div class="ip-hdr">
+            <div class="ip-hdr-left">
+              <svg width="12" height="12" viewBox="0 0 158.75 158.75">
+                <path style="fill:#1a1a1a;" d="M 147.47201,79.375 A 68.097008,68.567268 0 0 1 92.538837,146.64893 68.097008,68.567268 0 0 1 16.367396,105.38446 68.097008,68.567268 0 0 1 41.851156,22.156846 68.097008,68.567268 0 0 1 127.87513,31.243854 L 79.375,79.375 Z"/>
+              </svg>
+              <span class="ip-appname">aiforecast.app</span>
+            </div>
+            <div class="ip-avatar"></div>
+          </div>
+          <div class="ip-date">Tuesday, May 19 · Morning Digest</div>
+
+          <div class="ip-card">
+            <div class="ip-card-img">
+              <svg width="20" height="20" viewBox="0 0 158.75 158.75">
+                <path style="fill:#ccc;" d="M 147.47201,79.375 A 68.097008,68.567268 0 0 1 92.538837,146.64893 68.097008,68.567268 0 0 1 16.367396,105.38446 68.097008,68.567268 0 0 1 41.851156,22.156846 68.097008,68.567268 0 0 1 127.87513,31.243854 L 79.375,79.375 Z"/>
               </svg>
             </div>
-            <div class="sc-splash-name">aiforecast.app</div>
-            <div class="sc-splash-sub">Daily AI Intelligence</div>
-            <div class="sc-splash-btn">Free · No subscription</div>
+            <div class="ip-tag">Breaking · 1h ago</div>
+            <div class="ip-headline">OpenAI unveils next-gen reasoning model surpassing all benchmarks</div>
+            <div class="ip-meta">openai.com · 4 min read</div>
           </div>
-          <div class="bnav"><div class="bnd on"></div><div class="bnd"></div><div class="bnd"></div><div class="bnd"></div></div>
+
+          <div class="ip-card">
+            <div class="ip-tag">Research · 3h ago</div>
+            <div class="ip-headline">DeepMind publishes major protein folding breakthrough</div>
+            <div class="ip-meta">deepmind.google · 6 min read</div>
+          </div>
+
+          <div class="ip-card">
+            <div class="ip-tag">Policy · 6h ago</div>
+            <div class="ip-headline">EU passes landmark AI regulation framework for 2025</div>
+            <div class="ip-meta">reuters.com · 3 min read</div>
+          </div>
+        </div>
+        <div class="ip-bnav">
+          <div class="ip-dot on"></div>
+          <div class="ip-dot"></div>
+          <div class="ip-dot"></div>
+          <div class="ip-dot"></div>
         </div>
       </div>
     </div>
 
-    <!-- Center phone: Feed -->
-    <div class="pw center" aria-hidden="true">
-      <div class="ibody">
-        <div class="pb-pwr"></div><div class="pb-mute"></div><div class="pb-v1"></div><div class="pb-v2"></div>
-        <div class="iscr">
-          <div class="di-row"><div class="di-pill"></div></div>
-          <div class="sc-feed">
-            <div class="sc-f-hdr">
-              <div style="display:flex;align-items:center;gap:4px;">
-                <svg width="10" height="10" viewBox="0 0 158.75 158.75">
-                  <path style="fill:#1a1a1a;" d="M 147.47201,79.375 A 68.097008,68.567268 0 0 1 92.538837,146.64893 68.097008,68.567268 0 0 1 16.367396,105.38446 68.097008,68.567268 0 0 1 41.851156,22.156846 68.097008,68.567268 0 0 1 127.87513,31.243854 L 79.375,79.375 Z"/>
-                </svg>
-                <span class="sc-f-name">Morning Digest</span>
-              </div>
-              <div style="width:14px;height:14px;border-radius:50%;background:#f0f0f0;"></div>
-            </div>
-            <div class="sc-f-date">Tuesday, May 19 · 8:00 AM</div>
-            <div class="sc-card">
-              <div class="sc-card-img"></div>
-              <div class="sc-tag">Breaking · 1h ago</div>
-              <div class="sc-headline">OpenAI unveils next-gen reasoning model surpassing all benchmarks</div>
-              <div class="sc-meta">openai.com · 4 min read</div>
-            </div>
-            <div class="sc-card">
-              <div class="sc-tag">Research · 3h ago</div>
-              <div class="sc-headline">DeepMind publishes major protein folding breakthrough</div>
-              <div class="sc-meta">deepmind.google · 6 min read</div>
-            </div>
-            <div class="sc-card">
-              <div class="sc-tag">Policy · 6h ago</div>
-              <div class="sc-headline">EU passes landmark AI regulation framework for 2025</div>
-              <div class="sc-meta">reuters.com · 3 min read</div>
-            </div>
+    <!-- Secondary phone — detail screen -->
+    <div class="iphone secondary" aria-hidden="true">
+      <div class="ip-pwr"></div>
+      <div class="ip-mute"></div>
+      <div class="ip-v1"></div>
+      <div class="ip-v2"></div>
+      <div class="ip-screen">
+        <div class="ip-di-bar"><div class="ip-di"></div></div>
+        <div style="background:#111; padding:14px 12px 16px;">
+          <div style="font-size:7px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:4px;">
+            <svg width="5" height="8" viewBox="0 0 5 8" fill="none"><path d="M4 1L1 4L4 7" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Story Detail
           </div>
-          <div class="bnav"><div class="bnd on"></div><div class="bnd"></div><div class="bnd"></div><div class="bnd"></div></div>
+          <div style="font-size:9.5px;font-weight:800;color:#fff;line-height:1.28;margin-bottom:4px;">Anthropic raises $3B Series E — what it means for AI in 2025</div>
+          <div style="font-size:7px;color:rgba(255,255,255,0.38);">techcrunch.com · 1h ago · 5 min read</div>
         </div>
-      </div>
-    </div>
-
-    <!-- Right phone: Detail -->
-    <div class="pw right" aria-hidden="true">
-      <div class="ibody">
-        <div class="pb-pwr"></div><div class="pb-mute"></div><div class="pb-v1"></div><div class="pb-v2"></div>
-        <div class="iscr">
-          <div class="di-row"><div class="di-pill"></div></div>
-          <div class="sc-detail">
-            <div class="sc-d-top">
-              <div class="sc-d-back">
-                <svg width="5" height="8" viewBox="0 0 5 8" fill="none"><path d="M4 1L1 4L4 7" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linecap="round"/></svg>
-                Back
-              </div>
-              <div class="sc-d-title">Anthropic raises $3B Series E — what it means for AI in 2025</div>
-              <div class="sc-d-src">techcrunch.com · 1h ago · 5 min read</div>
-            </div>
-            <div class="sc-d-body">
-              <div class="sc-d-meta-row">
-                <span class="sc-d-chip">Funding</span>
-                <span class="sc-d-chip">Startups</span>
-                <span class="sc-d-chip">5 min</span>
-              </div>
-              <div class="sc-d-divider"></div>
-              <div class="sc-d-text">Anthropic has secured a $3 billion Series E round led by major institutional investors, pushing its valuation to over $60B. Funds will accelerate next-gen Claude research and global expansion...</div>
-              <div class="sc-d-bm">Bookmark story</div>
-            </div>
+        <div style="padding:10px 10px 0;">
+          <div style="display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap;">
+            <span style="background:#f2f2f2;border-radius:8px;padding:4px 7px;font-size:6.5px;font-weight:700;color:#555;">Funding</span>
+            <span style="background:#f2f2f2;border-radius:8px;padding:4px 7px;font-size:6.5px;font-weight:700;color:#555;">Startups</span>
+            <span style="background:#f2f2f2;border-radius:8px;padding:4px 7px;font-size:6.5px;font-weight:700;color:#555;">5 min</span>
           </div>
-          <div class="bnav"><div class="bnd"></div><div class="bnd on"></div><div class="bnd"></div><div class="bnd"></div></div>
+          <div style="height:0.5px;background:#eee;margin-bottom:8px;"></div>
+          <div style="font-size:7px;color:#666;line-height:1.55;">Anthropic has secured a $3 billion Series E round led by major institutional investors, pushing its valuation to over $60B. Funds will accelerate next-gen Claude models and global expansion into 2025 and beyond...</div>
+          <div style="margin-top:10px;background:#000;border-radius:14px;padding:8px;text-align:center;font-size:8px;font-weight:700;color:#fff;">Bookmark story</div>
+        </div>
+        <div class="ip-bnav">
+          <div class="ip-dot"></div>
+          <div class="ip-dot on"></div>
+          <div class="ip-dot"></div>
+          <div class="ip-dot"></div>
         </div>
       </div>
     </div>
@@ -552,7 +606,7 @@
   </div>
 </section>
 
-<!-- STATS -->
+<!-- ── STATS ── -->
 <section class="stats" aria-label="Key statistics">
   <div class="stat-cell"><div class="stat-num">50K+</div><div class="stat-label">Daily readers</div></div>
   <div class="stat-cell"><div class="stat-num">200+</div><div class="stat-label">Verified sources</div></div>
@@ -560,7 +614,7 @@
   <div class="stat-cell"><div class="stat-num">Free</div><div class="stat-label">Forever, always</div></div>
 </section>
 
-<!-- FEATURES -->
+<!-- ── FEATURES ── -->
 <section class="features">
   <p class="sec-label">Why aiforecast.app</p>
   <h2 class="sec-title">Everything AI.<br>Nothing else.</h2>
@@ -617,7 +671,7 @@
   </div>
 </section>
 
-<!-- CTA -->
+<!-- ── CTA ── -->
 <section class="cta-section" id="cta">
   <div class="cta-logo">
     <svg width="32" height="32" viewBox="0 0 158.75 158.75" aria-hidden="true">
@@ -646,7 +700,7 @@
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ── FOOTER ── -->
 <footer class="footer">
   <a href="#" class="footer-logo" aria-label="aiforecast.app">
     <svg width="18" height="18" viewBox="0 0 158.75 158.75" aria-hidden="true">
